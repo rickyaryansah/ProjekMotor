@@ -32,7 +32,7 @@
 #define HANDLE_LIMIT 30.0f
 #define INC_STEERING 2.0f
 #define INC_SPEED 0.05f
-int light_value = 0; //Mencerahkan seluruh objek 
+int light_value = 0; //Mencerahkan seluruh objek
 
 GLfloat pedalAngle, speed, steering; //Deklarasi posisi pedal, kecepatan, setir
 
@@ -736,3 +736,255 @@ void display_bike(void)
     glutSwapBuffers(); // melakukan pertukaran buffer dari 1 jendela ke jendela lain
 
 }
+
+// Muh. Ichwan Nur A. B | E1E121071
+
+void idle(void) // FUNCTION WHEN NO OPERATIONS PERFORMED
+{
+    updateScene(); // untuk mengapdet setiap scene (kalo dihilangkan dia tidak bergerak)
+    glutPostRedisplay(); // menandai jendela saat ini sebagai perlu ditampilkan ulang
+}
+
+
+void special(int key,int x,int y) // FUNCTION FOR CAM ZOOMING
+{
+    switch(key) //percabangan kode program dimana kita membandingkan isi sebuah variabel dengan beberapa nilai. Jika proses perbandingan tersebut menghasilkan true, maka block kode program akan di proses.
+    {
+        case GLUT_KEY_UP: // ini semua pengaturan untuk mengatur kamera melalui keyboard
+            camz -= 0.1f;
+        break;
+        case GLUT_KEY_DOWN:
+            camz += 0.1f;
+        break;
+        case GLUT_KEY_LEFT:
+            camx -= 0.1f;
+        break;
+        case GLUT_KEY_RIGHT:
+            camx += 0.1f;
+        break;
+    }
+    glutPostRedisplay(); // menandai jendela saat ini sebagai perlu ditampilkan ulang
+}
+
+void reset() // RESETTING SCENE
+{
+    Mouse=GLUT_UP;
+    pedalAngle=speed=steering=0.0f;
+    camx=camy=0.0f;
+    camz=5.0f;
+    xpos=zpos=0.0f;
+    direction=0.0f;
+    glPushMatrix();
+    glColor3f(0.5f,0.3f,0.0f);
+    glRotatef(100.0,0.0,0.0,1.0);
+    glTranslatef(-1.0,0.0,-0.6);
+    XCylinder(GAS_TANK-0.1,2.7);
+    glPopMatrix();
+}
+
+
+void keyboard(unsigned char key,int x,int y)
+{
+    GLfloat r=0.0f,g=0.0f;
+    switch(key)
+    {
+        case 'r':
+        case 'R':
+            reset();
+        break;
+        case 's':
+        case 'S':
+            glutDisplayFunc(operations_window);
+        break;
+        case 'c':
+        case 'C':
+            glutDisplayFunc(display_bike);
+        break;
+        case '1':
+            if(steering < HANDLE_LIMIT)
+            steering += INC_STEERING;
+        break;
+        case '2':
+            if(steering > -HANDLE_LIMIT)
+            steering -= INC_STEERING;
+        break;
+        case '+':
+            speed += INC_SPEED;
+            if (flag == 0)
+            {
+                flag = 1 ;
+                // to kill the idle sound while idle time
+                system("kill `ps | grep 'aplay'|awk '{print $1}'`") ;
+                system("aplay motorcycle-ride-01.wav&") ;
+            }
+        break;
+        case '-':
+            speed -= INC_SPEED;
+            if (flag == 1)
+            {
+                flag = 0 ;
+                system("kill `ps | grep 'aplay'|awk '{print $1}'`") ;
+                system("aplay motorcycle-idle-01.wav&") ;
+            }
+        break;
+        case 'p':
+            light_value = 0;
+            lighting();
+            break;
+        case 'o':
+            light_value = 1;
+            lighting();
+            break;
+        case 'i':
+            light_value = 2;
+            lighting();
+            break;
+        case 'u':
+            light_value = 3;
+            lighting();
+            break;
+        case 'q':
+            system("kill `ps | grep 'aplay'|awk '{print $1}'`") ;
+            // exit(1);
+    }
+
+    pedalAngle += speed;
+    if(speed < 0.0f)
+        speed = 0.0f;
+    if(pedalAngle < 0.0f)
+        pedalAngle = 0.0f;
+    if(pedalAngle >= 360.0f)
+        pedalAngle -= 360.0f;
+
+    glutPostRedisplay();
+}
+
+void mouse(int button,int state,int x,int y) // MOUSE FUNCTIONALITY
+{
+    switch(button)
+    {
+        case GLUT_LEFT_BUTTON:
+        if(state==GLUT_DOWN)
+        {
+            Mouse=GLUT_DOWN;
+            prevx=x;
+            prevy=y;
+        }
+        if(state==GLUT_UP)
+        {
+            Mouse=GLUT_UP;
+        }
+        break;
+        case GLUT_RIGHT_BUTTON:
+        break;
+    }
+    glutPostRedisplay();
+}
+
+
+void passive(int x,int y) // PASSIVE FUNCTION WHEN NO MOUSE KEYS ARE PRESSED
+{
+
+}
+
+
+void motion(int x,int y) // MOTION FUNCTION FOR CURRENT WINDOW WHEN MOUSE KEYS ARE PRESSED
+{
+    if(Mouse==GLUT_DOWN)
+    {
+        int deltax,deltay;
+        deltax=prevx-x;
+        deltay=prevy-y;
+        anglex += 0.5*deltax;
+        angley += 0.5*deltay;
+        if(deltax!=0 && deltay!=0)
+            anglez += 0.5*sqrt(deltax*deltax + deltay*deltay);
+        if(anglex < 0)
+            anglex+=360.0;
+        if(angley < 0)
+            angley+=360.0;
+        if(anglez < 0)
+            anglez += 360.0;
+        if(anglex > 360.0)
+            anglex-=360.0;
+        if(angley > 360.0)
+            angley-=360.0;
+        if(anglez > 360.0)
+            anglez-=360.0;
+    }
+    else
+    {
+        Mouse=GLUT_UP;
+    }
+
+    prevx=x;
+    prevy=y;
+    glutPostRedisplay();
+}
+
+void reshape(int w,int h)
+{
+    glViewport(0,0,(GLsizei)w,(GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0,(GLfloat)w/(GLfloat)h,0.1,100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(camx,camy,camz, 0.0,0.0,0.0, 0.0,1.0,0.0);
+}
+
+void welcome_window() // WELCOME WINDOW
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClearColor(0,0,0,0); // untuk mewarnai window bagian bike
+    glColor3f(1.0,1.0,1.0); // warnai tulisan di window bike
+    bitmap_output(-0.7,1.8,0.50,"Universitas Halu Oleo"); //tulisan di window bike
+    bitmap_output(-0.6,1.6,0.50,"Teknik Informatika"); // tulisan di window bike
+    bitmap_output(-0.6,0.70,0.50,"Projek Kelompok 6");
+    bitmap_output(-0.85,0.50,0.50,"Simulasi 3D Sepeda Motor");
+    bitmap_output(-0.95,-1.5,0.50,"Silahkan Tekan S Untuk Mulai");
+    glutSwapBuffers(); // pergantian window
+    glFlush(); // mengosongkan semua buffer ini, menyebabkan semua perintah yang dikeluarkan dieksekusi secepat mereka diterima oleh mesin rendering yang sebenarnya. Meskipun eksekusi ini mungkin tidak selesai dalam jangka waktu tertentu, itu selesai dalam jumlah waktu yang terbatas.
+}
+
+void operations_window() // OPERATION WINDOW FOR DESCRIPTION OF OPERATIONS TO PERFORM
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClearColor(0,0,0,0);
+    glColor3f(0.0,1.0,1.0);
+    bitmap_output(-2.25,1.7,0.50,"OPERASI YANG DAPAT DILAKUKAN DENGAN SEPEDA");
+    bitmap_output(-2.25,1.2,0.50,"1. RESET KAMERA - GUNAKAN 'R' ATAU 'r'");
+    bitmap_output(-2.25,1.0,0.50,"2. MENAMBAH KECEPATAN MOTOR - USE '+'");
+    bitmap_output(-2.25,0.8,0.50,"3. MENGURANGI KECEPATAN MOTOR - USE '-'");
+    bitmap_output(-2.25,0.6,0.50,"4. BELOK KANAN - USE '2'");
+    bitmap_output(-2.25,0.4,0.50,"5. BELOK KIRI - USE '1'");
+    bitmap_output(-2.25,0.2,0.50,"6. ZOOM IN - USE 'UPWARD ARROW'");
+    bitmap_output(-2.25,0.0,0.50,"7. ZOOM OUT - USE 'DOWNWARD ARROW'");
+    bitmap_output(-2.25,-0.2,0.50,"8. MOVE LEFT - USE 'LEFT ARROW'");
+    bitmap_output(-2.25,-0.4,0.50,"9. MOVE RIGHT - USE 'RIGHT ARROW'");
+    bitmap_output(-2.25,-0.6,0.50,"10. GUNAKAN MOUSE UNTUK MENGUBAH ARAH PENGLIHATAN KAMERA");
+    bitmap_output(-2.25,-1.0,0.50,"SILAHKAN TEKAN C UNTUK MELANJUTKAN");
+    glutSwapBuffers();
+    glFlush();
+}
+
+int main(int argc,char *argv[])
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowPosition(100,100);
+    glutInitWindowSize(WIN_WIDTH,WIN_HEIGHT);
+    glutCreateWindow("Bike");
+    init();
+    glutDisplayFunc(welcome_window);
+    glutReshapeFunc(reshape);
+    glutIdleFunc(idle);
+    glutSpecialFunc(special);
+    glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+    glutPassiveMotionFunc(passive);
+    glutSetCursor(GLUT_CURSOR_CROSSHAIR);
+    glutMainLoop();
+}
+
