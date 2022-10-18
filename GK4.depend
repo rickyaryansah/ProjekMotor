@@ -6,10 +6,10 @@
 	<stdlib.h>
 	<math.h>
 
-1663773095 c:\program files\codeblocks\mingw\include\gl\glut.h
+1663752112 c:\program files\codeblocks\mingw\include\gl\glut.h
 	"freeglut_std.h"
 
-1663773095 c:\program files\codeblocks\mingw\include\gl\freeglut_std.h
+1663752112 c:\program files\codeblocks\mingw\include\gl\freeglut_std.h
 	<windows.h>
 	<EGL/egl.h>
 	<GLES/gl.h>
@@ -19,4 +19,11 @@
 	<GL/gl.h>
 	<GL/glu.h>
 	<stdlib.h>
+
+1666089309 source:d:\uts grafkom\projekmotor\motor.cpp
+	<GL/glut.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<math.h>
 
