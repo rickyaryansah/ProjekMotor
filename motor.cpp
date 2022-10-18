@@ -123,3 +123,227 @@ void XCylinder(GLfloat radius,GLfloat length)
     ZCylinder(radius,length);
     glPopMatrix();
 }
+
+void updateScene()
+{
+    GLfloat xDelta, zDelta;
+    GLfloat rotation;
+    GLfloat sin_steering, cos_steering;
+    if (-INC_SPEED < speed && speed < INC_SPEED)
+        return;
+    if(speed < 0.0f)
+        pedalAngle = speed = 0.0f;
+
+    xDelta = speed*cos(radians(direction + steering));
+    zDelta = speed*sin(radians(direction + steering));
+    xpos += xDelta;
+    zpos -= zDelta;
+    pedalAngle = degrees(angleSum(radians(pedalAngle), speed/RADIUS_WHEEL));
+    sin_steering = sin(radians(steering));
+    cos_steering = cos(radians(steering));
+
+    rotation = atan2(speed * sin_steering, BIKE_LENGTH + speed * cos_steering);
+    direction = degrees(angleSum(radians(direction),rotation));
+}
+
+
+void drawFrame()
+{
+    glColor3f(1.0f,0.0f,0.0f);
+
+    glPushMatrix();
+
+    glPushMatrix();
+
+    glColor3f(0.0f,1.0f,0.0f);
+
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,0.06f);
+    glRotatef(-2*pedalAngle,0.0f,0.0f,1.0f);
+    gear(0.08f,0.3f,0.03f,30,0.03f);
+    glPopMatrix();
+
+    glColor3f(1.0f,0.0f,0.0f);
+    glTranslatef(0.0f,0.0f,-0.2f);
+    ZCylinder(0.08f,0.32f);
+    glPopMatrix();
+
+    glRotatef(RIGHT_ANGLE,0.0f,0.0f,1.0f);
+    XCylinder(ROD_RADIUS,RIGHT_ROD);
+
+
+    glRotatef(MIDDLE_ANGLE-RIGHT_ANGLE,0.0f,0.0f,1.0f);
+    XCylinder(ROD_RADIUS,MIDDLE_ROD);
+
+    glColor3f(1.0f,1.0f,1.0f);
+    glTranslatef(MIDDLE_ROD,0.0f,0.0f);
+    glRotatef(-MIDDLE_ANGLE,0.0f,0.0f,1.0f);
+    glScalef(0.3f,ROD_RADIUS,0.25f);
+    drawSeat();
+
+    glColor3f(1.0f,0.0f,0.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(-180.0f,0.0f,1.0f,0.0f);
+    XCylinder(ROD_RADIUS,BACK_CONNECTOR);
+
+
+    glPushMatrix();
+    glTranslatef(0.5f,0.0f,WHEEL_OFFSET);
+    XCylinder(ROD_RADIUS,RADIUS_WHEEL+TUBE_WIDTH);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.5f,0.0f,-WHEEL_OFFSET);
+    XCylinder(ROD_RADIUS,RADIUS_WHEEL+TUBE_WIDTH);
+    glPopMatrix();
+    glPopMatrix();
+
+
+    glPushMatrix();
+    glTranslatef(-(BACK_CONNECTOR+RADIUS_WHEEL+TUBE_WIDTH),0.0f,0.0f);
+
+    glPushMatrix();
+    glRotatef(-2*pedalAngle,0.0f,0.0f,1.0f);
+    drawTyre();
+    glColor3f(0.0f,1.0f,0.0f);
+    gear(0.03f,0.15f,0.03f,20,0.03f);
+    glColor3f(1.0f,0.0f,0.0f);
+    glPopMatrix();
+    glRotatef(LEFT_ANGLE,0.0f,0.0f,1.0f);
+
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,-WHEEL_OFFSET);
+    XCylinder(ROD_RADIUS,WHEEL_LEN);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,WHEEL_OFFSET);
+    XCylinder(ROD_RADIUS,WHEEL_LEN);
+    glPopMatrix();
+
+
+    glTranslatef(WHEEL_LEN,0.0f,0.0f);
+    XCylinder(ROD_RADIUS,CRANK_ROD-1.0);
+    glTranslatef(CRANK_ROD,0.0f,0.0f);
+    glRotatef(-LEFT_ANGLE,0.0f,0.0f,1.0f);
+    XCylinder(0.0000000001,TOP_LEN);
+
+    glPushMatrix();
+    glColor3f(0.5f,0.5f,0.5f);
+    glTranslatef(-0.6,-0.6f,0.0f);
+    XCylinder(GAS_TANK,1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.5f,0.5f,0.5f);
+    glTranslatef(0.6,0.5f,0.0f);
+    XCylinder(GAS_TANK,0.5f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.5f,0.5f,0.5f);
+    glTranslatef(-3.2,-2.1f,0.3f);
+    XCylinder(ROD_RADIUS+0.1f,1.5f);
+    glPopMatrix();
+    glPushMatrix();
+    glColor3f(0.5f,0.5f,0.5f);
+    glTranslatef(-3.2,-2.1f,0.3f);
+    glRotatef(120.0,0.0f,0.0f,1.0f);
+    XCylinder(ROD_RADIUS+0.1f,0.5f);
+    glPopMatrix();
+    glPushMatrix();
+    glColor3f(0.5f,0.5f,0.5f);
+    glTranslatef(-3.2,-2.1f,-0.3f);
+    XCylinder(ROD_RADIUS+0.1f,1.5f);
+    glPopMatrix();
+    glPushMatrix();
+    glColor3f(0.5f,0.5f,0.5f);
+    glTranslatef(-3.2,-2.1f,-0.3f);
+    glRotatef(120.0,0.0f,0.0f,1.0f);
+    XCylinder(ROD_RADIUS+0.1f,0.5f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.5f,0.5f,0.5f);
+    glTranslatef(0.4,-0.8f,0.2f);
+    glRotatef(LEFT_ANGLE,0.0f,0.0f,1.0f);
+    XCylinder(GAS_TANK,1.0f);
+    glTranslatef(0.2,-0.8f,0.2f);
+    glRotatef(LEFT_ANGLE-50.0,0.0f,0.0f,1.0f);
+    XCylinder(GAS_TANK,1.0f);
+    glPopMatrix();
+
+    glPushMatrix(); //berpengaruh pada bagian rangka depan objek (stir motor)
+    glColor3f(0.5f,0.5f,0.5f);
+    glTranslatef(0.4,-0.8f,-0.2f);
+    glRotatef(LEFT_ANGLE,0.0f,0.0f,1.0f);
+    XCylinder(GAS_TANK,1.0f);
+    glTranslatef(0.2,-0.8f,-0.2f);
+    glRotatef(LEFT_ANGLE-50.0,0.0f,0.0f,1.0f);
+    XCylinder(GAS_TANK,1.0f);
+    glPopMatrix();
+
+    glPushMatrix();//berpengaruh pada bagian rangka depan objek (stir motor)
+    glColor3f(0.1,0.1,0.1);
+    glTranslatef(-0.4f,-1.2f,0.0f);
+    XCylinder(GAS_TANK,1.3f);
+    glPopMatrix();
+
+    glTranslatef(TOP_LEN,0.0f,0.0f); //Fungsi glTranslatef mengalikan matriks saat ini dengan matriks terjemahan (stir atas)
+    glRotatef(-FRONT_INCLINE,0.0f,0.0f,1.0f);
+
+
+    glPushMatrix();//berhubungan dengan pergerakan objek orang, rantai dan lampu motor
+    glRotatef(-steering/2.0,1.0f,0.0f,0.0f);
+
+    glTranslatef(-0.3f,0.0f,0.0f);
+
+    glPushMatrix();//berhubungan dengan pergerakan objek orang, rantai dan lampu motor
+    glRotatef(FRONT_INCLINE,0.0f,0.0f,1.0f);
+    glPushMatrix();//berhubungan dengan pergerakan objek orang, rantai dan lampu motor
+    glTranslatef(-0.6f,0.5f,-HANDLE_ROD/2);
+    ZCylinder(ROD_RADIUS,HANDLE_ROD);
+    glPopMatrix();//mengatur panjang batang sebelah kiri bagian depan motor
+    glPushMatrix();//berhubungan dengan pergerakan objek orang, rantai dan lampu motor
+    glColor3f(1.0f,1.0f,0.0f);//warna setir
+    glTranslatef(-0.6f,0.5f,-HANDLE_ROD/2);//mengatur posisi setir
+    ZCylinder(0.07f,HANDLE_ROD/4);
+    glTranslatef(0.0f,0.0f,HANDLE_ROD*3/4);
+    ZCylinder(0.07f,HANDLE_ROD/4);
+    glColor3f(1.0f,0.0f,0.0f);
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+
+    glTranslatef(-0.75,0.0,0.0);//mengatur panjang batang depan motor
+    XCylinder(ROD_RADIUS,FRONT_ROD);//panjang batang atas
+
+    glTranslatef(CRANK_ROD,0.0f,0.0f);//memendekkan bagian depan motor
+    glRotatef(CRANK_ANGLE,0.0f,0.0f,1.0f);//mengantur panjang depan motor
+
+    glPushMatrix();//berhubungan dengan pergerakan objek orang, rantai dan lampu motor
+    glTranslatef(0.0f,0.0f,WHEEL_OFFSET-0.35);//mengatur ukuran panjang batang depan
+    XCylinder(ROD_RADIUS,CRANK_RODS);
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,-WHEEL_OFFSET+0.35);
+    XCylinder(ROD_RADIUS,CRANK_RODS);
+    glPopMatrix();
+
+    glTranslatef(CRANK_RODS,0.0f,0.0f);
+    glRotatef(-2*pedalAngle,0.0f,0.0f,1.0f);
+    drawTyre();                             //kepala
+    glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(1.0,1.0,0.0);
+    glRotatef(360.0,1.0,0.0,0.0);
+    glTranslatef(1.0,2.6,0.0);                  //lampu motor
+    glutSolidSphere(0.2,160.0,180.0);
+    glPopMatrix();
+}
