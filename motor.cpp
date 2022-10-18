@@ -32,7 +32,7 @@
 #define HANDLE_LIMIT 30.0f
 #define INC_STEERING 2.0f
 #define INC_SPEED 0.05f
-int light_value = 0; //Mencerahkan seluruh objek
+int light_value = 0; //Mencerahkan seluruh objek 
 
 GLfloat pedalAngle, speed, steering; //Deklarasi posisi pedal, kecepatan, setir
 
