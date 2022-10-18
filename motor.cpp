@@ -537,3 +537,202 @@ void drawSeat()
     glVertex3f(-1.0f,-1.0f,1.0f);
     glEnd();
 }
+
+// Yulinda Rizky Angelia Mursalim | E1E121017
+void drawPedals()
+{
+    glColor3f(0.0f,0.0f,1.0f);
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,0.105f);
+    glTranslatef(0.25f,0.0f,0.0f);
+
+    glPushMatrix();
+    glScalef(0.5f,0.1f,0.1f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.25f,0.0f,0.15f);
+    glScalef(0.2f,0.02f,0.3f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,-0.105f);
+    glTranslatef(0.25f,0.0f,0.0f);
+
+    glPushMatrix();
+    glScalef(0.5f,0.1f,0.1f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.25f,0.0f,-0.15f);
+    glScalef(0.2f,0.02f,0.3f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+    glPopMatrix();
+    glColor3f(1.0f,0.0f,0.0f);
+}
+
+void drawTyre(void)
+{
+    int i;
+
+    glColor3f(1.0f,1.0f,1.0f);
+    glutSolidTorus(-0.17,0.29,100,100);
+
+    glColor3f(1.0f,1.0f,1.0f);
+    glutSolidTorus(-0.05f,-0.75f,100,100);
+
+    glColor3f(1.0f,1.0f,0.5f);
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,-0.06f);
+    ZCylinder(0.02f,0.12f);
+    glPopMatrix();
+    glutSolidTorus(0.02f,0.02f,3,20);
+
+    glColor3f(1.0f,1.0f,1.0f);
+    for(i=0;i<NUM_SPOKES;++i)
+    {
+        glPushMatrix();
+        glRotatef(i*SPOKE_ANGLE,0.0f,0.0f,1.0f);
+        glBegin(GL_LINES);
+        glVertex3f(0.0f,0.02f,0.0f);
+        glVertex3f(0.0f,0.86f,0.0f);
+        glEnd();
+        glPopMatrix();
+    }
+
+    glColor3f(0.0f,0.0f,0.0f);
+    glutSolidTorus(TUBE_WIDTH,RADIUS_WHEEL,10,30);
+    glColor3f(1.0f,0.0f,0.0f);
+}
+
+
+void lighting() // FUNCTION FOR LIGHTING
+{
+    // printf("%s\n", "YESS ");
+    GLfloat light_directional[]={1.0,1.0,1.0,1.0};
+    GLfloat light_positional[]={1.0,1.0,1.0,1.0};
+    GLfloat light_diffuse[]={1.0,1.0,1.0};
+    GLfloat light_ambient[]={1.0f,1.0f,1.0f,1.0f};
+    if(light_value == 0){
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT,light_ambient) ;
+        glLightfv(GL_LIGHT0,GL_POSITION,light_positional);
+        glLightfv(GL_LIGHT0,GL_DIFFUSE,light_diffuse);
+    }
+    else if(light_value == 1){
+        glLightfv(GL_LIGHT0,GL_POSITION,light_positional);
+    }
+    else if(light_value == 2){
+        glLightfv(GL_LIGHT0,GL_DIFFUSE,light_diffuse);
+    }
+    else if(light_value==3){
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT,light_ambient) ;
+    }
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+}
+
+
+void shading() // FUNCTION FOR SHADING BIKE
+{
+    GLfloat mat_spec[]={1.0,1.0,1.0,1.0};
+    GLfloat mat_shine[]={100.0};
+    glShadeModel(GL_SMOOTH);
+    glMaterialfv(GL_FRONT,GL_SHININESS,mat_shine);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,mat_spec);
+    glColorMaterial(GL_FRONT,GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_DEPTH_TEST);
+}
+
+GLuint loadimage(const char *fileName)
+{
+	FILE *file;
+	unsigned char header[54],*data;
+	unsigned int dataPos,size,width, height;
+	file = fopen(fileName, "rb");
+	fread(header, 1, 54, file);
+	dataPos		= *(int*)&(header[0x0A]);
+	size		= *(int*)&(header[0x22]);
+	width		= *(int*)&(header[0x12]);
+	height		= *(int*)&(header[0x16]);
+	if (size == NULL)
+		size = width * height * 3;
+	if (dataPos == NULL)
+		dataPos = 54;
+	data = new unsigned char[size];
+	fread(data, 1, size, file);
+	fclose(file);
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+}
+
+void init_texture()
+{
+    grass = loadimage("grass_1.bmp") ;
+}
+
+void init() // INITIALIZING SCENE
+{
+    reset();
+    init_texture() ;
+}
+
+void draw_ground()
+{
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D,grass);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-100.0f,-1.5f,100.0f);;
+	glTexCoord2f(100.0f, 0.0f); glVertex3f(-100.0f,-1.5f,-100.0f);;
+	glTexCoord2f(100.0f, 100.0f); glVertex3f(100.0f,-1.5f,-100.0f);
+	glTexCoord2f(0.0f, 100.0f); glVertex3f(100.0f,-1.5f,100.0f);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glLineWidth(5.0);
+	glTranslatef(0.0, -2, 0.0);
+	glTranslatef(0.0, 2, 0.0);
+}
+
+void display_bike(void)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_NORMALIZE);
+
+    // drawscore(200);
+    char speedString[100];
+    sprintf(speedString, "Speed: %f", speed*10);
+    writeText(-0.23, 2, 1, speedString);
+
+    lighting();
+    shading();
+    glPushMatrix();
+
+    glRotatef(angley,1.0f,0.0f,0.0f);
+    glRotatef(anglex,0.0f,1.0f,0.0f);
+    glRotatef(anglez,0.0f,0.0f,1.0f);
+
+    draw_ground() ;
+
+    glPushMatrix();
+    glTranslatef(xpos,0.0f,zpos);
+    glRotatef(direction,0.0f,1.0f,0.0f);
+    drawFrame();
+    drawChain();
+    glPopMatrix();
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(camx,camy,camz, camx,1.0,0.0,0.0,1.0,1.0); // pengaturan kamera
+    glutSwapBuffers(); // melakukan pertukaran buffer dari 1 jendela ke jendela lain
+
+}
