@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1667324527 source:d:\kuliah\semester 3\grafika komputer\gk4\motor.cpp
+1667356393 source:d:\kuliah\semester 3\grafika komputer\gk4\motor.cpp
 	<GL/glut.h>
 	<stdio.h>
 	<string.h>
