@@ -3,7 +3,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include<math.h>
-#define PI 3.1459
+#define PI 3.14159
 #define WIN_WIDTH 1366
 #define WIN_HEIGHT 768
 #define BIKE_LENGTH 3.3f
@@ -149,13 +149,13 @@ void updateScene()
 
 void drawFrame()
 {
-    //glColor3f(1.0f,0.0f,0.0f);
-
-    glPushMatrix();//berfungsi untuk menyimpan koordinat yang ada
+    glColor3f(1.0f,1.0f,0.0f);
 
     glPushMatrix();
 
-    glColor3f(1.0f,0.0f,0.0f); //warna gear
+    glPushMatrix();
+
+    glColor3f(1.0f,1.0f,0.0f); //warna gear
 
 
     glPushMatrix();
@@ -164,17 +164,17 @@ void drawFrame()
     gear(0.08f,0.3f,0.03f,30,0.03f);
     glPopMatrix();
 
-    glColor3f(1.0f,0.0f,0.0f); //rangka depan v
+    glColor3f(1.0f,1.0f,0.0f); //rangka depan v
     glTranslatef(0.0f,0.0f,-0.2f);
-    ZCylinder(0.08f,0.32f); //ketebalan rankga
+    ZCylinder(0.08f,0.32f);
     glPopMatrix();
 
     glRotatef(RIGHT_ANGLE,0.0f,0.0f,1.0f);
-    XCylinder(ROD_RADIUS,RIGHT_ROD); //rangka V yang /
+    XCylinder(ROD_RADIUS,RIGHT_ROD);
 
 
     glRotatef(MIDDLE_ANGLE-RIGHT_ANGLE,0.0f,0.0f,1.0f);
-    XCylinder(ROD_RADIUS,MIDDLE_ROD); //rangka V yang \
+    XCylinder(ROD_RADIUS,MIDDLE_ROD);
 
     glColor3f(1.0f,1.0f,0.0f); //tidak tau
     glTranslatef(MIDDLE_ROD,0.0f,0.0f);
@@ -182,7 +182,7 @@ void drawFrame()
     glScalef(0.3f,ROD_RADIUS,0.25f);
     drawSeat();
 
-    glColor3f(1.0f,0.0f,0.0f); //warna rangka bawah
+    glColor3f(1.0f,1.0f,0.0f); //warna rangka bawah
     glPopMatrix();
 
     glPushMatrix();
@@ -206,10 +206,10 @@ void drawFrame()
 
     glPushMatrix();
     glRotatef(-2*pedalAngle,0.0f,0.0f,1.0f);
-    drawTyre();
-    glColor3f(1.0f,0.0f,0.0f); //gear belakang
+    drawTyre(); //Ban belakang
+    glColor3f(1.0f,1.0f,0.0f); //bulatan tengah belakang ban
     gear(0.03f,0.15f,0.03f,20,0.03f);
-    glColor3f(1.0f,0.0f,0.0f);  //rangka belakang
+    glColor3f(1.0f,1.0f,0.0f);  //rangka belakang
     glPopMatrix();
     glRotatef(LEFT_ANGLE,0.0f,0.0f,1.0f);
 
@@ -231,62 +231,62 @@ void drawFrame()
     XCylinder(0.0000000001,TOP_LEN);
 
     glPushMatrix();
-    glColor3f(1.0f,0.0f,0.0f); // warna slinder atas depan seat
+    glColor3f(1.0f,1.0f,0.0f); // warna slinder atas
     glTranslatef(-0.6,-0.6f,0.0f);
     XCylinder(GAS_TANK,1.0f);
     glPopMatrix();
 
     glPushMatrix();
-    glColor3f(1.0f,0.0f,0.0f);//warna tabung senter
+    glColor3f(1.0f,1.0f,0.0f);//warna tabung senter
     glTranslatef(0.6,0.5f,0.0f);
     XCylinder(GAS_TANK,0.5f);
     glPopMatrix();
 
     glPushMatrix();
-    glColor3f(1.0f,0.0f,0.0f); //knalpot lurus samping kanan
+    glColor3f(1.0f,1.0f,0.0f);
     glTranslatef(-3.2,-2.1f,0.3f);
     XCylinder(ROD_RADIUS+0.1f,1.5f);
     glPopMatrix();
     glPushMatrix();
-    glColor3f(1.0f,0.0f,0.0f); //kanalpot atas bagian kanan
+    glColor3f(1.0f,1.0f,0.0f); //bagian belakang kanalpot bagian atas
     glTranslatef(-3.2,-2.1f,0.3f);
     glRotatef(120.0,0.0f,0.0f,1.0f);
     XCylinder(ROD_RADIUS+0.1f,0.5f);
     glPopMatrix();
     glPushMatrix();
-    glColor3f(1.0f,0.0f,0.0f); //knalpot lurus samping kiri
+    glColor3f(1.0f,1.0f,0.0f); //warna knalpot
     glTranslatef(-3.2,-2.1f,-0.3f);
     XCylinder(ROD_RADIUS+0.1f,1.5f);
     glPopMatrix();
     glPushMatrix();
-    glColor3f(1.0f,0.0f,0.0f); //kanalpot atas bagian kiri
+    glColor3f(1.0f,1.0f,0.0f); //warna knalpot
     glTranslatef(-3.2,-2.1f,-0.3f);
     glRotatef(120.0,0.0f,0.0f,1.0f);
     XCylinder(ROD_RADIUS+0.1f,0.5f);
     glPopMatrix();
 
     glPushMatrix();
-    glColor3f(1.0f,0.0f,0.0f); //warna dua tabung depan kanan
+    glColor3f(1.0f,1.0f,0.0f); //warna knalpot
     glTranslatef(0.4,-0.8f,0.2f);
     glRotatef(LEFT_ANGLE,0.0f,0.0f,1.0f);
-    XCylinder(GAS_TANK,1.0f); //tabung dekat stir
+    XCylinder(GAS_TANK,1.0f);
     glTranslatef(0.2,-0.8f,0.2f);
     glRotatef(LEFT_ANGLE-50.0,0.0f,0.0f,1.0f);
-    XCylinder(GAS_TANK,1.0f); //tabung dekat stir
+    XCylinder(GAS_TANK,1.0f);
     glPopMatrix();
 
     glPushMatrix(); //berpengaruh pada bagian rangka depan objek (stir motor)
-    glColor3f(1.0f,0.0f,0.0f); //warna dua tabung depan kiri
+    glColor3f(1.0f,1.0f,0.0f);
     glTranslatef(0.4,-0.8f,-0.2f);
     glRotatef(LEFT_ANGLE,0.0f,0.0f,1.0f);
-    XCylinder(GAS_TANK,1.0f); //tabung dekat stir
+    XCylinder(GAS_TANK,1.0f);
     glTranslatef(0.2,-0.8f,-0.2f);
     glRotatef(LEFT_ANGLE-50.0,0.0f,0.0f,1.0f);
-    XCylinder(GAS_TANK,1.0f); //tabung dekat stir
+    XCylinder(GAS_TANK,1.0f);
     glPopMatrix();
 
-    glPushMatrix();//berpengaruh pada bagian tabung dibawah tabung depan seat dan rangka stir
-    glColor3f(1.0,0.0,0.0);
+    glPushMatrix();//berpengaruh pada bagian rangka depan objek (stir motor)
+    glColor3f(1.0,1.0,0.0);
     glTranslatef(-0.4f,-1.2f,0.0f);
     XCylinder(GAS_TANK,1.3f);
     glPopMatrix();
@@ -304,46 +304,46 @@ void drawFrame()
     glRotatef(FRONT_INCLINE,0.0f,0.0f,1.0f);
     glPushMatrix();//berhubungan dengan pergerakan objek orang, rantai dan lampu motor
     glTranslatef(-0.6f,0.5f,-HANDLE_ROD/2);
-    ZCylinder(ROD_RADIUS,HANDLE_ROD); //tengah-tengah stir
+    ZCylinder(ROD_RADIUS,HANDLE_ROD);
     glPopMatrix();//mengatur panjang batang sebelah kiri bagian depan motor
     glPushMatrix();//berhubungan dengan pergerakan objek orang, rantai dan lampu motor
-    glColor3f(1.0f,0.0f,0.0f);//warna setir
+    glColor3f(1.0f,1.0f,0.0f);//warna setir
     glTranslatef(-0.6f,0.5f,-HANDLE_ROD/2);//mengatur posisi setir
-    ZCylinder(0.07f,HANDLE_ROD/4); //stir kiri
+    ZCylinder(0.07f,HANDLE_ROD/4);
     glTranslatef(0.0f,0.0f,HANDLE_ROD*3/4);
-    ZCylinder(0.07f,HANDLE_ROD/4); //stir kanan
-    glColor3f(1.0f,0.0f,0.0f); //warna rangka depan
+    ZCylinder(0.07f,HANDLE_ROD/4);
+    glColor3f(1.0f,1.0f,0.0f); //warna rangka depan
     glPopMatrix();
     glPopMatrix();
 
     glPushMatrix();
 
     glTranslatef(-0.75,0.0,0.0);//mengatur panjang batang depan motor
-    XCylinder(ROD_RADIUS,FRONT_ROD);//tempat stir bersandar
+    XCylinder(ROD_RADIUS,FRONT_ROD);//panjang batang atas
 
     glTranslatef(CRANK_ROD,0.0f,0.0f);//memendekkan bagian depan motor
     glRotatef(CRANK_ANGLE,0.0f,0.0f,1.0f);//mengantur panjang depan motor
 
     glPushMatrix();//berhubungan dengan pergerakan objek orang, rantai dan lampu motor
     glTranslatef(0.0f,0.0f,WHEEL_OFFSET-0.35);//mengatur ukuran panjang batang depan
-    XCylinder(ROD_RADIUS,CRANK_RODS); //rangka atas ban depan kiri
+    XCylinder(ROD_RADIUS,CRANK_RODS);
     glPopMatrix();
     glPushMatrix();
     glTranslatef(0.0f,0.0f,-WHEEL_OFFSET+0.35);
-    XCylinder(ROD_RADIUS,CRANK_RODS); //rangka atas ban depan kanan
+    XCylinder(ROD_RADIUS,CRANK_RODS);
     glPopMatrix();
 
     glTranslatef(CRANK_RODS,0.0f,0.0f);
     glRotatef(-2*pedalAngle,0.0f,0.0f,1.0f);
-    drawTyre(); //ban depan                            //kepala
+    drawTyre(); //Ban depan
     glPopMatrix();
     glPopMatrix();
     glPopMatrix();
 
     glPushMatrix();
-    glColor3f(1.0,0.0,0.0);     //warna lampu
+    glColor3f(1.0,1.0,0.0);     //warna lampu
     glRotatef(360.0,1.0,0.0,0.0);
-    glTranslatef(1.0,2.6,0.0);                  //posisi lampu motor
+    glTranslatef(1.0,2.6,0.0);                  //lampu motor
     glutSolidSphere(0.2,160.0,180.0);
     glPopMatrix();
 }
@@ -453,7 +453,7 @@ void drawChain()
 {
     GLfloat depth;
     static int mode=0;
-    glColor3f(1.0f,0.0f,0.0f); //warna rantai
+    glColor3f(1.0f,1.0f,0.0f); //warna rantai
     glEnable(GL_LINE_STIPPLE);
     mode=(mode+1)%2;
 
@@ -477,7 +477,6 @@ void drawChain()
 
 void drawSeat()
 {
-
     glBegin(GL_POLYGON);
     glVertex3f(-0.1f, 1.0f, -0.5f);
     glVertex3f( 1.0f, 1.0f, -0.3f);
@@ -489,7 +488,7 @@ void drawSeat()
     glVertex3f(-0.5f, 1.0f, -1.0f);
     glEnd();
 
-    glBegin(GL_POLYGON);
+    glColor3f(1.0f,1.0f,0.0f);
     glVertex3f(-0.1f, -1.0f, -0.5f);
     glVertex3f( 1.0f, -1.0f, -0.3f);
     glVertex3f( 1.0f, -1.0f, 0.3f);
@@ -537,24 +536,61 @@ void drawSeat()
 }
 
 
+void drawPedals()
+{
+    glColor3f(1.0f,1.0f,0.0f);
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,0.105f);
+    glTranslatef(0.25f,0.0f,0.0f);
+
+    glPushMatrix();
+    glScalef(0.5f,0.1f,0.1f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.25f,0.0f,0.15f);
+    glScalef(0.2f,0.02f,0.3f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,-0.105f);
+    glTranslatef(0.25f,0.0f,0.0f);
+
+    glPushMatrix();
+    glScalef(0.5f,0.1f,0.1f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.25f,0.0f,-0.15f);
+    glScalef(0.2f,0.02f,0.3f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+    glPopMatrix();
+    glColor3f(1.0f,0.0f,0.0f);
+}
+
 void drawTyre(void)
 {
     int i;
 
-    glColor3f(1.0f,0.0f,0.0f); //warna bulatan tengah ban
+    glColor3f(1.0f,1.0f,0.0f); //warna knalpot juga
     glutSolidTorus(-0.17,0.29,100,100);
 
-    glColor3f(1.0f,0.0f,0.0f); //warna ban dalam
+    glColor3f(1.0f,1.0f,0.0f); //warna ban dalam
     glutSolidTorus(-0.05f,-0.75f,100,100);
 
-    glColor3f(1.0f,0.0f,0.0f); //warna tengah ban depan
+    glColor3f(1.0f,1.0f,0.0f);
     glPushMatrix();
     glTranslatef(0.0f,0.0f,-0.06f);
     ZCylinder(0.02f,0.12f);
     glPopMatrix();
     glutSolidTorus(0.02f,0.02f,3,20);
 
-    glColor3f(1.0f,0.0f,0.0f); // warna pelek ban
+    glColor3f(1.0f,1.0f,0.0f); // warna felek ban
     for(i=0;i<NUM_SPOKES;++i)
     {
         glPushMatrix();
@@ -566,15 +602,14 @@ void drawTyre(void)
         glPopMatrix();
     }
 
-    glColor3f(1.0f,0.0f,0.0f);                      // ubah warna ban
+    glColor3f(1.0f,1.0f,0.0f);                      // ubah warna ban
     glutSolidTorus(TUBE_WIDTH,RADIUS_WHEEL,10,30);
-    glColor3f(1.0f,1.0f,0.0f);                      // bayangan warna ban
+    glColor3f(1.0f,1.0f,0.0f);                      // ubah warna ban
 }
 
 
 void lighting() // FUNCTION FOR LIGHTING
 {
-    // printf("%s\n", "YESS ");
     GLfloat light_directional[]={1.0,1.0,1.0,1.0};
     GLfloat light_positional[]={1.0,1.0,1.0,1.0};
     GLfloat light_diffuse[]={1.0,1.0,1.0};
@@ -645,24 +680,23 @@ void init_texture()
 void init() // INITIALIZING SCENE
 {
     reset();
-    init_texture() ;
+    //glClearColor(1.0,0.0,0.0,0.0);
 }
-
 void draw_ground()
 {
+    glClearColor(1.0,1.0,1.0,0.0);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D,grass);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(-100.0f,-1.5f,100.0f);;
-	glTexCoord2f(100.0f, 0.0f); glVertex3f(-100.0f,-1.5f,-100.0f);;
-	glTexCoord2f(100.0f, 100.0f); glVertex3f(100.0f,-1.5f,-100.0f);
-	glTexCoord2f(0.0f, 100.0f); glVertex3f(100.0f,-1.5f,100.0f);
-	glEnd();
+	//glBindTexture(GL_TEXTURE_2D,grass);
+	//glBegin(GL_QUADS);
+	//glTexCoord2f(0.0f, 0.0f); glVertex3f(-100.0f,-1.5f,100.0f);;
+	//glTexCoord2f(100.0f, 0.0f); glVertex3f(-100.0f,-1.5f,-100.0f);;
+	//glTexCoord2f(100.0f, 100.0f); glVertex3f(100.0f,-1.5f,-100.0f);
+	//glTexCoord2f(0.0f, 100.0f); glVertex3f(100.0f,-1.5f,100.0f);
+	//glEnd();
 	glDisable(GL_TEXTURE_2D);
-	glLineWidth(5.0);
-	glTranslatef(0.0, -2, 0.0);
-	glTranslatef(0.0, 2, 0.0);
-
+	//glLineWidth(5.0);
+	//glTranslatef(0.0, -2, 0.0);
+	//glTranslatef(0.0, 2, 0.0);
 }
 
 void display_bike(void)
@@ -679,13 +713,13 @@ void display_bike(void)
     shading();
     glPushMatrix();
 
-    //glRotatef(angley,1.0f,0.0f,0.0f);
-    //glRotatef(anglex,0.0f,1.0f,0.0f);
-    //glRotatef(anglez,0.0f,0.0f,1.0f);
+    glRotatef(angley,1.0f,0.0f,0.0f);
+    glRotatef(anglex,0.0f,1.0f,0.0f);
+    glRotatef(anglez,0.0f,0.0f,1.0f);
 
     draw_ground() ;
 
-    //glPushMatrix();
+    glPushMatrix();
     glTranslatef(xpos,0.0f,zpos);
     glRotatef(direction,0.0f,1.0f,0.0f);
     drawFrame();

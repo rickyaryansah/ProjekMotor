@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1667324527 source:d:\kuliah\semester 3\grafika komputer\gk4\motor.cpp
+1666076321 source:d:\kuliah\semester 3\grafika komputer\gk4\motor.cpp
 	<GL/glut.h>
 	<stdio.h>
 	<string.h>
@@ -20,7 +20,14 @@
 	<GL/glu.h>
 	<stdlib.h>
 
-1667309065 source:c:\users\elvi salemaku\documents\templat office kustom\gk4\motor.cpp
+1666146502 source:c:\users\elvi salemaku\documents\templat office kustom\gk4\gk4\motor.cpp
+	<GL/glut.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<math.h>
+
+1667315630 source:d:\kuliah\semester 3\grafika komputer\gk4\gk4\motor.cpp
 	<GL/glut.h>
 	<stdio.h>
 	<string.h>
